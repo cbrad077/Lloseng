@@ -73,7 +73,65 @@ public class ClientConsole implements ChatIF
       while (true) 
       {
         message = fromConsole.readLine();
-        client.handleMessageFromClientUI(message);
+        if (message.charAt(0) == '#') {
+	  switch(message.toLowerCase()) {
+	    case "#quit":
+		System.out.println("Disconnecting from server...");
+		client.closeConnection();
+		System.out.println("Exiting. Goodbye. ");
+		System.exit(0);
+		break;
+	    case "#logoff":
+		client.closeConnection();
+		System.out.println("Disconnected from server. ");
+		break;
+	     case "#sethost": 
+		if (client.isConnected()) {
+		  System.out.println("Error: Cannot set host while connected.");
+		} else {
+		System.out.print("/nEnter host name: ");
+		BufferedReader reader =  
+                   new BufferedReader(new InputStreamReader(System.in));
+		String host = reader.readLine();
+		client.setHost(host);
+		System.out.println("Host set. ");
+		}
+		break;
+	     case "#setport":
+		if (client.isConnected()) {
+		  System.out.println("Error: Cannot set port while connected.");
+		} else {
+		System.out.print("/nEnter port: ");
+		BufferedReader reader2 =  
+                   new BufferedReader(new InputStreamReader(System.in));
+		String input = reader2.readLine();
+		int port = Integer.parseInt(input);
+		client.setPort(port);
+		System.out.println("Port set. ");
+		}
+		break;
+	     case "#login":
+		try 
+		{
+		  client.openConnection();
+		  System.out.println("Logged in. ");
+		}
+		catch(IOException e)
+		{
+		  System.out.println("Error: you are already logged in.");
+		}
+		break;
+	     case "#gethost":
+		System.out.println("Host: " + client.getHost());
+		break;
+	     case "#getport":
+		System.out.println("Port: " + client.getPort());
+		break;
+	     default:
+		System.out.println("Command << " + message + " >> does not exist.");
+	  }
+	} else {
+	client.handleMessageFromClientUI(message); }
       }
     } 
     catch (Exception ex) 
@@ -96,6 +154,16 @@ public class ClientConsole implements ChatIF
 
   
   //Class methods ***************************************************
+
+  protected void connectionClosed() 
+  {
+    System.out.println("Server is no longer connected. ");
+  }
+
+  protected void connectionException(Exception exception) 
+  {
+    System.out.println("Connection Exception: ");
+  }
   
   /**
    * This method is responsible for the creation of the Client UI.
@@ -109,13 +177,23 @@ public class ClientConsole implements ChatIF
 
     try
     {
-      host = args[0];
+      port = Integer.parseInt(args[0]); //Get port from command line
+    }
+    catch(Throwable t)
+    {
+      port = DEFAULT_PORT; //Set port to 5555
+    }
+
+    try
+    {
+      host = args[1];
     }
     catch(ArrayIndexOutOfBoundsException e)
     {
       host = "localhost";
     }
-    ClientConsole chat= new ClientConsole(host, DEFAULT_PORT);
+
+    ClientConsole chat= new ClientConsole(host, port);
     chat.accept();  //Wait for console data
   }
 }
