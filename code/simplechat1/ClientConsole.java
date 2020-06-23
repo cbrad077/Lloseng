@@ -83,7 +83,7 @@ public class ClientConsole implements ChatIF
 		break;
 	    case "#logoff":
 		client.closeConnection();
-		System.out.println("Disconnected from server. ");
+		System.out.println("Connection closed. ");
 		break;
 	     case "#sethost": 
 		if (client.isConnected()) {
