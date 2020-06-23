@@ -161,9 +161,7 @@ public class ClientConsole implements ChatIF
   }
 
   protected void connectionException(Exception exception) 
-  {
-    System.out.println("Connection Exception: ");
-  }
+  {}
   
   /**
    * This method is responsible for the creation of the Client UI.

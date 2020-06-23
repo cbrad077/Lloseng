@@ -87,10 +87,7 @@ public class EchoServer extends AbstractServer
   }
 
   synchronized protected void clientDisconnected(
-    ConnectionToClient client) 
-  {
-
-  }
+    ConnectionToClient client) {}
 
 
 
