@@ -134,7 +134,7 @@ public class ClientConsole implements ChatIF
 		System.out.println("Command << " + message + " >> does not exist.");
 	  }
 	} else {
-	client.handleMessageFromClientUI(client.getClientID() + ": " + message); }
+	client.handleMessageFromClientUI(client.getClientID() + "> " + message); }
       }
     } 
     catch (Exception ex) 
@@ -183,7 +183,7 @@ public class ClientConsole implements ChatIF
     }
     catch(ArrayIndexOutOfBoundsException e)
     {
-      System.out.println("ERROR: you must enter a clientID.");
+      System.out.println("ERROR - No login ID specified.  Connection aborted.");
       System.exit(0);
     }
 
