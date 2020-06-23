@@ -127,11 +127,14 @@ public class ClientConsole implements ChatIF
 	     case "#getport":
 		System.out.println("Port: " + client.getPort());
 		break;
+	     case "#getid":
+		System.out.println("ClientID: " + client.getClientID());
+		break;
 	     default:
 		System.out.println("Command << " + message + " >> does not exist.");
 	  }
 	} else {
-	client.handleMessageFromClientUI(message); }
+	client.handleMessageFromClientUI(client.getClientID() + ": " + message); }
       }
     } 
     catch (Exception ex) 
@@ -172,10 +175,21 @@ public class ClientConsole implements ChatIF
   {
     String host = "";
     int port = 0;  //The port number
+    String clientID = "";
 
     try
     {
-      port = Integer.parseInt(args[0]); //Get port from command line
+      clientID = args[0]; //Get clientID from command line
+    }
+    catch(ArrayIndexOutOfBoundsException e)
+    {
+      System.out.println("ERROR: you must enter a clientID.");
+      System.exit(0);
+    }
+
+    try
+    {
+      port = Integer.parseInt(args[1]); //Get port from command line
     }
     catch(Throwable t)
     {
@@ -184,7 +198,7 @@ public class ClientConsole implements ChatIF
 
     try
     {
-      host = args[1];
+      host = args[2];
     }
     catch(ArrayIndexOutOfBoundsException e)
     {
@@ -192,7 +206,9 @@ public class ClientConsole implements ChatIF
     }
 
     ClientConsole chat= new ClientConsole(host, port);
+    chat.client.setClientID(clientID);
     chat.accept();  //Wait for console data
+    System.out.println("ClientID: " + chat.client.getClientID());
   }
 }
 //End of ConsoleChat class

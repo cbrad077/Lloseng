@@ -26,6 +26,7 @@ public class ChatClient extends AbstractClient
    * the display method in the client.
    */
   ChatIF clientUI; 
+  String clientID;
 
   
   //Constructors ****************************************************
@@ -48,6 +49,13 @@ public class ChatClient extends AbstractClient
 
   
   //Instance methods ************************************************
+
+	public String getClientID(){
+		return this.clientID;
+	}
+	public void setClientID(String id){
+		this.clientID = id;
+	}
     
   /**
    * This method handles all data that comes in from the server.
